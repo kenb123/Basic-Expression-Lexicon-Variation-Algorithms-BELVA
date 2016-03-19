@@ -1,0 +1,335 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+
+#--------------------------------------------------------------------------------------------------
+#    pyOwaspBELVA - Contextual custom dictionary builder with character and word variations for pen-testers 
+#    Copyright (C) 2016  OWASP Foundation / Kenneth F. Belva
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#--------------------------------------------------------------------------------------------------
+
+#--------------------------------------------------------------------------------------------------
+# This project is named after my amazing father: 
+#            Albert Joseph BELVA
+#
+# And, it is dedicated to him and his memory.
+#
+# This dedication and project is to raise awareness for 
+# Lewy Body Disease / Dementia which my father lived with 
+# since his mid-60s until his passing at 72.
+#
+# More information on Lewy Body Dementia may be found here:
+# https://en.wikipedia.org/wiki/Dementia_with_Lewy_bodies
+#
+# Please add this dedication to every file in the project. 
+# Thank you much. -Ken
+#--------------------------------------------------------------------------------------------------
+
+
+import os, time, sys, sqlite3
+from PyQt4 import QtGui
+
+# converted Qt4 UI from Qt Converter & cmd; pyuic4 design.ui -o design.py
+import src.gui.design
+
+from src.db.belvaDbInitalize import belvaInitDB
+from src.db.belvaDbInitalize import belvaRemoveDB
+
+from src.db.belvaSqlDBroutines import count_text_words
+from src.db.belvaSqlDBroutines import count_burp_words
+from src.db.belvaSqlDBroutines import count_zap_words
+from src.db.belvaSqlDBroutines import get_all_burp_words
+from src.db.belvaSqlDBroutines import create_consolidated_list
+from src.db.belvaSqlDBroutines import count_consolidated_list
+from src.db.belvaSqlDBroutines import get_all_consolidated_words
+
+
+from src.pluginSystem.pluginControlSystem import get_policy_mutate_names
+from src.pluginSystem.pluginControlSystem import get_policy_select_names
+from src.pluginSystem.pluginControlSystem import get_substitution_names
+from src.pluginSystem.pluginControlSystem import return_substitution_dict
+
+from src.belvaCommonRoutines import iterative_function
+from src.belvaCommonRoutines import get_positions
+
+from src.dataImport.belvaDataImport import belvaDataImport
+
+
+
+#--------------------------------------------------------------------------------------------------
+class BELVA_AppUI(QtGui.QMainWindow, src.gui.design.Ui_MainWindow):
+#--------------------------------------------------------------------------------------------------
+    def __init__(self):
+ 
+        super(self.__class__, self).__init__()
+        self.setupUi(self)
+        
+        #UPDATE WINDOW BAR GUI VERSION NUMBER
+        
+#        self.textBrowser_help_text.append("help text1")
+#        self.textBrowser_help_text.append("help text2")
+
+
+        #set the default directory to the localized importExternalSources Folder
+        current_directory = os.getcwd()
+        self.lineEdit_input_src_dir.setText(current_directory + "/importExternalSources/")
+
+        #set the default directory to the localized outputFile Folder
+        self.lineEdit_output_src_dir.setText(current_directory+ "/outputFile/output.txt")
+        
+        #load boxes....
+        policy_names = []
+        subsuitition_names = []
+        
+        policy_mutate_names = get_policy_mutate_names()
+        policy_select_names = get_policy_select_names()
+
+        subsuitition_names = get_substitution_names() 
+                
+        for policy_name in policy_mutate_names:
+            self.listWidget_policies_mutate.addItem(policy_mutate_names[policy_name])
+
+        for policy_name in policy_select_names:
+            self.listWidget_policies_select.addItem(policy_select_names[policy_name])
+
+
+        for subsuitition_name in subsuitition_names:
+            self.listWidget_substitutions.addItem(subsuitition_names[subsuitition_name])
+
+
+        self.pushButton_input_src_dir.clicked.connect(self.input_src_dir)  # When the button is pressed
+        self.pushButton_output_src_dir.clicked.connect(self.output_src_dir)  # When the button is pressed
+        self.pushButton_run_belva.clicked.connect(self.run_belva)  # When the button is pressed
+
+
+
+    def form_checks(self):
+        # default value should be false
+        passed_checks = False
+        
+        # we can put error checking here
+        passed_checks = True
+
+        return passed_checks
+
+    #=================================================
+    # assuming we pass the checks, we write an API layer into UI design
+    #=================================================
+    def run_belva(self):
+        if self.form_checks():
+#        self.textBrowser_results_window.clear() # In case there are any existing elements in the list
+
+            self.progressBar.setValue(0)
+            self.textBrowser_status_msgs.clear()
+            self.textBrowser_status_msgs_brief.clear()
+            
+            input_directory = self.lineEdit_input_src_dir.text()
+            output_file = self.lineEdit_output_src_dir.text()
+
+            global_gui_status_msgs = self.textBrowser_status_msgs
+            global_gui_status_msgs_brief = self.textBrowser_status_msgs_brief
+            global_gui_progressBar = self.progressBar
+            
+#            global_gui_status_msgs, global_gui_status_msgs_brief, global_gui_progressBar, 
+            #------------------------------------
+            #    This should really be passed in via parameters but need to
+            #    research signals and slots for QT4... until then....
+            #------------------------------------
+            policy_mutate_names = []
+            policy_select_names = []
+            subsuitition_names = []
+        
+            policy_mutate_names = get_policy_mutate_names()
+            policy_select_names = get_policy_select_names()
+            subsuitition_names = get_substitution_names() 
+            #------------------------------------
+
+
+            #------------------------------------
+            # Create database to normalize data and have unique words
+            #------------------------------------
+            MD5_string = belvaInitDB()
+
+
+            #idea - have form to auto generate substitution and policy plugins...
+            
+            policy_mutate_descriptions_selected = []
+            for policy_description_selected in self.listWidget_policies_mutate.selectedItems():
+                policy_mutate_descriptions_selected.append(policy_description_selected.text())
+
+            policy_select_descriptions_selected = []
+            for policy_description_selected in self.listWidget_policies_select.selectedItems():
+                policy_select_descriptions_selected.append(policy_description_selected.text())
+
+            
+            substitution_descriptions_selected = []
+            for substitution_description_selected in self.listWidget_substitutions.selectedItems():
+                substitution_descriptions_selected.append(substitution_description_selected.text())
+
+            #------------------------------------
+            # Translate Descriptions back into plugin names
+            #------------------------------------
+
+            policy_mutate_plugin_names = []
+            for policy_description in policy_mutate_descriptions_selected:
+                for policy_name in policy_mutate_names:
+                    if policy_mutate_names[policy_name] == policy_description:
+                        policy_mutate_plugin_names.append(policy_name)
+
+
+            policy_select_plugin_names = []
+            for policy_description in policy_select_descriptions_selected:
+                for policy_name in policy_select_names:
+                    if policy_select_names[policy_name] == policy_description:
+                        policy_select_plugin_names.append(policy_name)
+
+
+            substitution_plugin_names = []
+            for substitution_description in substitution_descriptions_selected:
+                for substitution_name in subsuitition_names:
+                    if subsuitition_names[substitution_name] == substitution_description:
+                        substitution_plugin_names.append(substitution_name)
+
+
+
+            #------------------------------------
+            # Import Data from Wordlists, ZAP and burp
+            #------------------------------------
+            self.textBrowser_status_msgs.append("Starting: reading through files...")
+            self.textBrowser_status_msgs.append("Starting: removing common words...")
+            self.textBrowser_status_msgs.append("Starting: creating temp word dictionary...")
+
+
+            belvaDataImport(global_gui_status_msgs, global_gui_status_msgs_brief, global_gui_progressBar, input_directory, MD5_string)
+
+            total_word_count = count_consolidated_list(MD5_string)
+            self.textBrowser_status_msgs.append("Total Number of Unique Consolidated Words: " + str(total_word_count))
+            
+            # no words found!
+            if total_word_count == 0:
+                print()
+
+#            gui.belva_qt4_global_gui_vars.global_gui_window = self.textBrowser_results_window
+#            gui.belva_qt4_routines_delete.run_app(nmap_text, masscan_network_text, masscan_ports_text)
+
+            #------------------------------------
+            # Set progress bar for end user info
+            #------------------------------------
+
+            self.progressBar.setMinimum(0)
+            self.progressBar.setMaximum(int(total_word_count))
+            self.progressBar.setValue(0)
+            count = 0
+
+            positions_ds = {}
+            subsitution_dictionary = {}
+
+            if (int(total_word_count) < 500000):
+
+                all_consolidated_words = get_all_consolidated_words(MD5_string)
+
+            self.textBrowser_status_msgs.append("Mutating finalized temp word dictionary")
+            for substitution_plugin_name in substitution_plugin_names:
+
+                #------------------------------------
+                # retrieve dictionary from substitution selected
+                #------------------------------------
+
+                subsitution_dictionary = return_substitution_dict(substitution_plugin_name)
+                self.textBrowser_status_msgs.append("Using substitution plug-in: " +  substitution_plugin_name)
+
+                #------------------------------------
+                # cycle through finalized list of words
+                #------------------------------------
+                
+                if (int(total_word_count) < 500000):
+                    for word in all_consolidated_words:
+                    
+                        count = self.progressBar.value() + 1
+                        self.progressBar.setValue(count)
+                        self.textBrowser_status_msgs_brief.setText("Now processing word " + str(count) + " of " + str(total_word_count) + " : " + str(word[0]))
+                        #HAVE A STOP BUTTTON
+                    
+                        positions_ds = get_positions(word[0], subsitution_dictionary)
+                        iterative_function(0, positions_ds, word[0], "", policy_mutate_plugin_names, policy_select_plugin_names, output_file)
+
+
+                
+                else:
+                    
+                    db_path = os.getcwd()
+                    db_path = db_path + "/tmp/" + MD5_string + ".db"
+   
+                    connection = sqlite3.connect(db_path)
+                    cursor = connection.cursor()
+
+                    for word in cursor.execute('SELECT unique_consolidated_list FROM consolidated_list'):
+                    
+                        count = self.progressBar.value() + 1
+                        self.progressBar.setValue(count)
+                        self.textBrowser_status_msgs_brief.setText("Now processing word " + str(count) + " of " + str(total_word_count) + " : " + str(word[0]))
+                        #HAVE A STOP BUTTTON
+                    
+                        positions_ds = get_positions(word[0], subsitution_dictionary)
+                        iterative_function(0, positions_ds, word[0], "", output_file)
+
+
+                    cursor.close()
+                    connection.close()
+    
+                    del cursor
+                    del connection
+
+            self.textBrowser_status_msgs_brief.clear()
+            self.textBrowser_status_msgs.append("Finished Mutating temp word dictionary")
+
+            #------------------------------------
+            # Clean up temporary files
+            #------------------------------------
+            self.textBrowser_status_msgs.append("Cleaning up temporary data....")
+            belvaRemoveDB(MD5_string)
+            
+            self.textBrowser_status_msgs.append("Please Find the final custom dictionary here:")
+            self.textBrowser_status_msgs.append(output_file)            
+            self.textBrowser_status_msgs.append("FINISHED!!!")
+
+
+
+    def input_src_dir(self):
+
+        directory = QtGui.QFileDialog.getExistingDirectory(self,"Pick a folder")
+
+        self.lineEdit_input_src_dir.clear()
+        self.lineEdit_input_src_dir.setText(directory)
+
+
+    def output_src_dir(self):
+
+       
+        output_file =  QtGui.QFileDialog.getOpenFileName(self,"Pick Output File")
+
+        self.lineEdit_output_src_dir.clear()
+        self.lineEdit_output_src_dir.setText(output_file)
+
+
+                                                                                                            
+
+def launch_gui():
+    
+    app = QtGui.QApplication(sys.argv)
+    form = BELVA_AppUI()
+    form.show()
+    app.exec_()
+
+

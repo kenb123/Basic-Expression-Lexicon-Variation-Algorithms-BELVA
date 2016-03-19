@@ -1,0 +1,16 @@
+#--------------------------------------------------------------------------------------------------
+# This project is named after my amazing father: 
+#            Albert Joseph BELVA
+#
+# And, it is dedicated to him and his memory.
+#
+# This dedication and project is to raise awareness for 
+# Lewy Body Disease / Dementia which my father lived with 
+# since his mid-60s until his passing at 72.
+#
+# More information on Lewy Body Dementia may be found here:
+# https://en.wikipedia.org/wiki/Dementia_with_Lewy_bodies
+#
+# Please add this dedication to every file in the project. 
+# Thank you much. -Ken
+#--------------------------------------------------------------------------------------------------
