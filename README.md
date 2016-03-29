@@ -35,14 +35,12 @@ To Run:
 4. Type ./pyOwaspBELVA.py and hit ENTER
 
 
-Potential issues:
+Potential issues
+--
 
----------------------
-You may need to type:
+To make the py files executable you may need to type:
 	chmod 755 ./*.py -R 
 
-to make the py files executable
----------------------
+
 Follow py instructions to install additional libraries 
 	such as QT4 if needed
----------------------
