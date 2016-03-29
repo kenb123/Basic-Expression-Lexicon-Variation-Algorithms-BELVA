@@ -236,8 +236,9 @@ def belvaImportBurpXML(global_gui_status_msgs, global_gui_status_msgs_brief, dat
                 xpath = "/response/text()"
                 specific_request_encoded_data_text = parseXMLsingle(str(each_encoded_request.decode('utf-8')), xpath)
                 b64msg = base64.b64decode(specific_request_encoded_data_text[0])
-                
+
                 all_text = parseAllHTMLtext(b64msg)
+
                 for word in all_text:
                     i += 1
 
@@ -246,7 +247,7 @@ def belvaImportBurpXML(global_gui_status_msgs, global_gui_status_msgs_brief, dat
                         if str(word).strip() == common_word:
                             is_common_word = True
 
-                    if not is_common_word: 
+                    if not is_common_word:
                         write_consolidated_list(word, MD5_string)
                         global_gui_status_msgs_brief.setText("burp File word count: " + str(i))
 

@@ -137,9 +137,12 @@ def parseHTMLallText(http_source):
 
     return_values = []
 
+#    print(http_source)
     # if it's not an html page we return
     try:
-        if (not ("<html>" in http_source.decode('utf-8').lower())
+        if (not (("<html>" in http_source.decode('utf-8').lower())
+            or ("<html " in http_source.decode('utf-8').lower()))
+            
             or ("'<html>" in http_source.decode('utf-8').lower())
             or ('"<html>' in http_source.decode('utf-8').lower())):
             
@@ -150,7 +153,7 @@ def parseHTMLallText(http_source):
     # if we cant find the start of the file
     # or if there is a decode error we want to skip
     try:
-        pure_html = http_source[http_source.decode('utf-8').find("<"):]
+        pure_html = http_source[http_source.decode('utf-8').find("<html"):]
 
         #----------------
         # Get Meta items
