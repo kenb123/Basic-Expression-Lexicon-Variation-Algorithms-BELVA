@@ -57,7 +57,7 @@ class Description():
 
 
         DescriptionDetails = {}
-        DescriptionDetails['name'] = "-No Selection Policies"
+        DescriptionDetails['name'] = "(0) No Selection Policies"
         
         return DescriptionDetails
 

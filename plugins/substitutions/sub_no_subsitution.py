@@ -58,7 +58,7 @@ class Description():
 
 
         DescriptionDetails = {}
-        DescriptionDetails['name'] = "-No Substitution"        
+        DescriptionDetails['name'] = "(0) No Substitution"        
         
         return DescriptionDetails
 
