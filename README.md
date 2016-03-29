@@ -21,7 +21,7 @@ Please see DEDICATION file for more info.
 Find general info and FAQ on owasp.org project page:
 https://www.owasp.org/index.php/OWASP_Basic_Expression_&_Lexicon_Variation_Algorithms_%28BELVA%29_Project
 
-How to / videos to come.....
+How to & videos to come.....
 
 
 3. Running pyOwaspBELVA
@@ -44,3 +44,5 @@ To make the py files executable you may need to type:
 
 Follow py instructions to install additional libraries 
 	such as QT4 if needed
+
+Developed on Linux so Windows mileage may vary (as of 2016 March 29)
