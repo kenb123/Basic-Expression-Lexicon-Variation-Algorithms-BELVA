@@ -6,4 +6,3 @@ security
 cissp
 cissp2
 
-FirstName LastName
