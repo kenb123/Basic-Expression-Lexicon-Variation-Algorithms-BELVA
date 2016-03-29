@@ -77,9 +77,18 @@ class BELVA_AppUI(QtGui.QMainWindow, src.gui.design.Ui_MainWindow):
         
         #UPDATE WINDOW BAR GUI VERSION NUMBER
         
-#        self.textBrowser_help_text.append("help text1")
-#        self.textBrowser_help_text.append("help text2")
+        self.textBrowser_help_text.append("Follow / Contact me on Twitter: @infosecmaverick")        
+        self.textBrowser_help_text.append("Help on the OWASP Project Page:")
+        self.textBrowser_help_text.append("    https://www.owasp.org/index.php/OWASP_Basic_Expression_%26_Lexicon_Variation_Algorithms_%28BELVA%29_Project")
+        self.textBrowser_help_text.append("Topics will include:")
+        self.textBrowser_help_text.append("    How to import burp xml files for org specific content")
+        self.textBrowser_help_text.append("    How to import ZAP raw files for org specific content")
+        self.textBrowser_help_text.append("    How to create user id combinations")
+        self.textBrowser_help_text.append("    How to write a plugin")
+        self.textBrowser_help_text.moveCursor(QtGui.QTextCursor.Start)       
 
+
+        self.progressBar.setValue(0)
 
         #set the default directory to the localized importExternalSources Folder
         current_directory = os.getcwd()
@@ -106,7 +115,6 @@ class BELVA_AppUI(QtGui.QMainWindow, src.gui.design.Ui_MainWindow):
 
         for subsuitition_name in subsuitition_names:
             self.listWidget_substitutions.addItem(subsuitition_names[subsuitition_name])
-
 
         self.pushButton_input_src_dir.clicked.connect(self.input_src_dir)  # When the button is pressed
         self.pushButton_output_src_dir.clicked.connect(self.output_src_dir)  # When the button is pressed
