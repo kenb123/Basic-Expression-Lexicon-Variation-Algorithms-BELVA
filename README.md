@@ -41,7 +41,7 @@ To Run:
 Potential issues
 --
 
-To make the py files executable you may need to type:
+To make the py files executable you *may* need to type:
 
 	chmod 755 ./*.py -R 
 
@@ -61,7 +61,7 @@ Change to outFile/outfile.txt directory (or your selected outfile directory) and
 
 	tail -f outfile.txt
 
-You will see new dictionary words being generated.
+You will see new dictionary words being generated if past the import stage.
 
 
 5. To Do
@@ -70,12 +70,12 @@ You will see new dictionary words being generated.
 1. Word selection / automated weighing of which words to use
 2. Interface improvements: better responsiveness 
 3. Multi-Threading from interface
-4. Non-GUI version that directs outputs to stdout
+4. Non-GUI version that directs output to stdout
 5. Expand functionality and add more plug-ins
 	- Additional mutation dictionaries
 	- Additional applied and removal policies
 	- Additional username creation policies
-6. Other types of mutations that just usernames and passwords???
+6. Other types of mutations that just usernames and passwords??? (i.e., email addresses)
 
 
 Developed on Linux and not testing on other platforms so Windows/OSX mileage may vary (as of 2016 March 29)
