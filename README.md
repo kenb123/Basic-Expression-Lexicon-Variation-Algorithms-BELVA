@@ -78,5 +78,5 @@ You will see new dictionary words being generated if past the import stage.
 6. Other types of mutations that just usernames and passwords??? (i.e., email addresses)
 
 
-Developed on Linux and not testing on other platforms so Windows/OSX mileage may vary (as of 2016 March 29)
+Developed on Linux and not tested on other platforms so Windows/OSX mileage may vary (as of 2016 March 29)
 --
