@@ -78,8 +78,8 @@ class BELVA_AppUI(QtGui.QMainWindow, src.gui.design.Ui_MainWindow):
         #UPDATE WINDOW BAR GUI VERSION NUMBER
         
         self.textBrowser_help_text.append("Follow / Contact me on Twitter: @infosecmaverick")        
-        self.textBrowser_help_text.append("Help on the OWASP Project Page:")
-        self.textBrowser_help_text.append("    https://www.owasp.org/index.php/OWASP_Basic_Expression_%26_Lexicon_Variation_Algorithms_%28BELVA%29_Project")
+        self.textBrowser_help_text.append("Help on the OWASP Project Page: http://bit.ly/1okrO1T")
+#        self.textBrowser_help_text.append("    https://www.owasp.org/index.php/OWASP_Basic_Expression_%26_Lexicon_Variation_Algorithms_%28BELVA%29_Project")
         self.textBrowser_help_text.append("Topics will include:")
         self.textBrowser_help_text.append("    How to import burp xml files for org specific content")
         self.textBrowser_help_text.append("    How to import ZAP raw files for org specific content")
