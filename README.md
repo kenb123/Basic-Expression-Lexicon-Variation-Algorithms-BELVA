@@ -8,7 +8,7 @@ Contents
 3. Running pyOwaspBELVA
 4. Known Issues
 5. To Do
---
+
 
 1. Dedication
 --
@@ -42,6 +42,7 @@ Potential issues
 --
 
 To make the py files executable you may need to type:
+
 	chmod 755 ./*.py -R 
 
 
@@ -56,8 +57,9 @@ The interface needs better responsiveness: it can be sluggish and may appear unr
 
 To verify app is working:
 
-	Change to outFile/outfile.txt directory (or your selected outfile directory)
-	and type: 	tail -f outfile.txt
+Change to outFile/outfile.txt directory (or your selected outfile directory) and type:
+
+	tail -f outfile.txt
 
 You will see new dictionary words being generated.
 
@@ -76,5 +78,5 @@ You will see new dictionary words being generated.
 6. Other types of mutations that just usernames and passwords???
 
 
-Developed on Linux so Windows mileage may vary (as of 2016 March 29)
+Developed on Linux and not testing on other platforms so Windows/OSX mileage may vary (as of 2016 March 29)
 --
