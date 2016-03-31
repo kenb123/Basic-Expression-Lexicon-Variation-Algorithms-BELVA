@@ -6,6 +6,9 @@ Contents
 1. Dedication
 2. Information / Resources
 3. Running pyOwaspBELVA
+4. Known Issues
+5. To Do
+--
 
 1. Dedication
 --
@@ -31,7 +34,7 @@ To Run:
 
 1. Download zip from git
 2. Unzip downloaded file into folder
-3. Open command prompt and change directories into unziped folder
+3. Open command prompt and change directories into unzipped folder
 4. Type ./pyOwaspBELVA.py and hit ENTER
 
 
@@ -45,4 +48,33 @@ To make the py files executable you may need to type:
 Follow py instructions to install additional libraries 
 	such as QT4 if needed
 
+
+4. Known Issues
+--
+
+The interface needs better responsiveness: it can be sluggish and may appear unresponsive. 
+
+To verify app is working:
+
+	Change to outFile/outfile.txt directory (or your selected outfile directory)
+	and type: 	tail -f outfile.txt
+
+You will see new dictionary words being generated.
+
+
+5. To Do
+--
+
+1. Word selection / automated weighing of which words to use
+2. Interface improvements: better responsiveness 
+3. Multi-Threading from interface
+4. Non-GUI version that directs outputs to stdout
+5. Expand functionality and add more plug-ins
+	- Additional mutation dictionaries
+	- Additional applied and removal policies
+	- Additional username creation policies
+6. Other types of mutations that just usernames and passwords???
+
+
 Developed on Linux so Windows mileage may vary (as of 2016 March 29)
+--
