@@ -68,6 +68,31 @@ def nonread_sqlite(SQL, MD5_sum):
 
 
 #----------------------------------------------
+def nonread_sqlite_parameterized(SQL, MD5_sum):
+#----------------------------------------------
+
+    db_path = os.getcwd()
+    db_path = db_path + "/tmp/" + MD5_sum + ".db"
+    
+    connection = sqlite3.connect(db_path)
+    cursor = connection.cursor()
+
+    try:
+        cursor.execute(*SQL)
+        connection.commit()
+    except:
+        pass
+
+    cursor.close()
+    connection.close()
+    
+    del cursor
+    del connection
+
+
+
+
+#----------------------------------------------
 def read_sqlite(SQL, MD5_sum):
 #----------------------------------------------
 

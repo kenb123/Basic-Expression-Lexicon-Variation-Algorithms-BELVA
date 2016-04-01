@@ -46,6 +46,8 @@ import base64
 import sqlite3
 
 from src.db.belvaDbRoutines import nonread_sqlite as change_db
+from src.db.belvaDbRoutines import nonread_sqlite_parameterized as change_db_parameterized
+
 from src.db.belvaDbRoutines import read_sqlite
 
 
@@ -141,8 +143,12 @@ def get_all_zap_words(MD5_string):
 def write_consolidated_list(word, MD5_string):
 #------------------------------------------------------------------------------------
     
-    sqlString =  "INSERT INTO consolidated_list (unique_consolidated_list) VALUES ('" + word.lower() + "')"
-    change_db(sqlString, MD5_string)
+#    sqlString =  "INSERT INTO consolidated_list (unique_consolidated_list) VALUES ('" + word.lower() + "')"
+#    change_db(sqlString, MD5_string)
+
+    clean_word = str(word.lower())
+    sqlString =  "INSERT INTO consolidated_list (unique_consolidated_list) VALUES (?)", [clean_word]
+    change_db_parameterized(sqlString, MD5_string)
 
 
 
