@@ -51,31 +51,41 @@ from src.parsers.belvaParseXML import parseHTMLallText as parseAllHTMLtext
 #--------------------------------------------------------------------------
 def belvaDataImport(global_gui_status_msgs, global_gui_status_msgs_brief, global_gui_progressBar, directoryPath, MD5_string):
 #--------------------------------------------------------------------------
+    #To recursively search all files for their file extension
+    #Text will be read in line by line
+    #raw and xml are recognized as ZAP and BURP respectively
+    #This is the inclusion list
+    filename_dict = {} # dictionary with key value pairs
     
-    filename_dict = {}
     for root, directories, filenames in os.walk(directoryPath):
+        
         for filename in filenames:
+            
             full_path_w_file = os.path.join(root,filename)
+            
             filename, file_extension = os.path.splitext(full_path_w_file)
+            
             filename_dict[full_path_w_file] = file_extension
             filename = os.path.basename(full_path_w_file)
-
-
+            
     #-------------------
-    remove_common_words = []
+    
+    #This is the exclusion list
+    remove_common_words = [] # This is where all the words 
     common_words_file = os.getcwd() + "/filterDictionaries/commonwords.txt"
 
-    f = open(common_words_file,'r')
+    f = open(common_words_file,'r') # open file as read only
     
-    for line in f:
-        if str(line).strip():
+    for line in f: # for each line in the file
+      #just check to make sure to make sure a word exists
+      #
+        if str(line).strip(): # strip down to regular word only include regular charactaers
+            #
             remove_common_words.append(str(line).strip().lower())
 
     f.close()
     f = None
     #-------------------
-
-
 
 
     number_xml = sum( ".xml" in x for x in filename_dict.values())
@@ -90,7 +100,7 @@ def belvaDataImport(global_gui_status_msgs, global_gui_status_msgs_brief, global
 
 
     #------------------
-    # process
+    # process ftttfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff6          
     #------------------
 
 ######    global_gui_progressBar --> j
@@ -99,7 +109,8 @@ def belvaDataImport(global_gui_status_msgs, global_gui_status_msgs_brief, global
     global_gui_progressBar.setValue(0)
 
 
-
+    #This maintains the percetage because it know the total of each file type
+    #TODO Compress this into one line
     
     # burp
     i = 0
@@ -139,10 +150,7 @@ def belvaDataImport(global_gui_status_msgs, global_gui_status_msgs_brief, global
 
             global_gui_status_msgs.append("Processing zap file " + str(i) + " of " + str(number_raw))
             zapDataImport(global_gui_status_msgs, global_gui_status_msgs_brief, full_path, MD5_string, remove_common_words)            
-            
-            
-            
-                
+                   
 #--------------------------------------------------------------------------
 def txtDataImport(global_gui_status_msgs, global_gui_status_msgs_brief, full_path_w_file, MD5_string, remove_common_words):
 #--------------------------------------------------------------------------
