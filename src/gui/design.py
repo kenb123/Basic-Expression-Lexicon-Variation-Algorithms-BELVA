@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'design.ui'
 #
-# Created: Wed Mar 16 12:35:29 2016
+# Created: Thu Apr  7 16:13:26 2016
 #      by: PyQt4 UI code generator 4.11.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -144,7 +144,7 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "OWASP - Basic Expression & Lexicon Variation Algorithms (BELVA) - ver 0.1", None))
         self.pushButton_run_belva.setText(_translate("MainWindow", "Run BELVA", None))
         self.pushButton_input_src_dir.setText(_translate("MainWindow", "Directory", None))
-        self.label.setText(_translate("MainWindow", "Input Sources Directory", None))
+        self.label.setText(_translate("MainWindow", "Import Sources Directory", None))
         self.label_2.setText(_translate("MainWindow", "Status Messages", None))
         self.label_3.setText(_translate("MainWindow", "Progress:", None))
         self.pushButton_output_src_dir.setText(_translate("MainWindow", "Choose File", None))
