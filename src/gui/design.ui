@@ -113,7 +113,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Input Sources Directory</string>
+     <string>Import Sources Directory</string>
     </property>
    </widget>
    <widget class="QFrame" name="frame_2">

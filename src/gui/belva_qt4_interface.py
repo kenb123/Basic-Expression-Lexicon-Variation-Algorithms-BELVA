@@ -210,6 +210,48 @@ class BELVA_AppUI(QtGui.QMainWindow, src.gui.design.Ui_MainWindow):
                         substitution_plugin_names.append(substitution_name)
 
 
+            #------------------------------------
+            # Get files to import / separate large from small
+            #------------------------------------
+            small_filename_dict = {}
+            large_filename_dict = {}
+
+            for root, directories, filenames in os.walk(input_directory):
+                for filename in filenames:
+                    full_path_w_file = os.path.join(root,filename)
+                    filename, file_extension = os.path.splitext(full_path_w_file)
+#                    small_filename_dict[full_path_w_file] = file_extension
+#                    filename = os.path.basename(full_path_w_file)
+                    # 10 MB
+                    if ((os.path.getsize(full_path_w_file) >= 10485760) and (file_extension == '.txt')):
+                        large_filename_dict[full_path_w_file] = file_extension
+                    else:
+                        small_filename_dict[full_path_w_file] = file_extension
+
+
+            #------------------------------------
+            # Get words to filter
+            #------------------------------------
+            remove_common_words = []
+            common_words_dir = os.getcwd() + "/filterDictionaries/"
+
+    
+            for root, directories, filenames in os.walk(common_words_dir):
+                for filename in filenames:
+                    full_path_w_file = os.path.join(root,filename)
+
+                    f = open(full_path_w_file,'r')
+    
+                    for line in f:
+                        if str(line).strip():
+                            remove_common_words.append(str(line).strip().lower())
+
+                    f.close()
+                    f = None
+    #-------------------
+
+
+
 
             #------------------------------------
             # Import Data from Wordlists, ZAP and burp
@@ -219,10 +261,10 @@ class BELVA_AppUI(QtGui.QMainWindow, src.gui.design.Ui_MainWindow):
             self.textBrowser_status_msgs.append("Starting: creating temp word dictionary...")
 
 
-            belvaDataImport(global_gui_status_msgs, global_gui_status_msgs_brief, global_gui_progressBar, input_directory, MD5_string)
+            belvaDataImport(global_gui_status_msgs, global_gui_status_msgs_brief, global_gui_progressBar, small_filename_dict, MD5_string, remove_common_words)
 
             total_word_count = count_consolidated_list(MD5_string)
-            self.textBrowser_status_msgs.append("Total Number of Unique Consolidated Words: " + str(total_word_count))
+            self.textBrowser_status_msgs.append("Total Number of Unique Consolidated Words for small files: " + str(total_word_count))
             
             # no words found!
             if total_word_count == 0:
@@ -243,11 +285,10 @@ class BELVA_AppUI(QtGui.QMainWindow, src.gui.design.Ui_MainWindow):
             positions_ds = {}
             subsitution_dictionary = {}
 
-            if (int(total_word_count) < 500000):
+            all_consolidated_words = get_all_consolidated_words(MD5_string)
 
-                all_consolidated_words = get_all_consolidated_words(MD5_string)
 
-            self.textBrowser_status_msgs.append("Mutating finalized temp word dictionary")
+            self.textBrowser_status_msgs.append("Mutating finalized temp word dictionary for small files...")
             for substitution_plugin_name in substitution_plugin_names:
 
                 #------------------------------------
@@ -261,43 +302,62 @@ class BELVA_AppUI(QtGui.QMainWindow, src.gui.design.Ui_MainWindow):
                 # cycle through finalized list of words
                 #------------------------------------
                 
-                if (int(total_word_count) < 500000):
-                    for word in all_consolidated_words:
+                for word in all_consolidated_words:
                     
-                        count = self.progressBar.value() + 1
-                        self.progressBar.setValue(count)
-                        self.textBrowser_status_msgs_brief.setText("Now processing word " + str(count) + " of " + str(total_word_count) + " : " + str(word[0]))
+                    count = self.progressBar.value() + 1
+                    self.progressBar.setValue(count)
+                    self.textBrowser_status_msgs_brief.setText("Now processing word " + str(count) + " of " + str(total_word_count) + " : " + str(word[0]))
                         #HAVE A STOP BUTTTON
                     
-                        positions_ds = get_positions(word[0], subsitution_dictionary)
-                        iterative_function(0, positions_ds, word[0], "", policy_mutate_plugin_names, policy_select_plugin_names, output_file)
+                    positions_ds = get_positions(word[0], subsitution_dictionary)
+                    iterative_function(0, positions_ds, word[0], "", policy_mutate_plugin_names, policy_select_plugin_names, output_file)
 
 
-                
-                else:
-                    
-                    db_path = os.getcwd()
-                    db_path = db_path + "/tmp/" + MD5_string + ".db"
-   
-                    connection = sqlite3.connect(db_path)
-                    cursor = connection.cursor()
+            #------------------------------------
+            #    process large files
+            #------------------------------------
+            self.textBrowser_status_msgs_brief.clear()
+            self.textBrowser_status_msgs.append("Now processing large files...")
+            for full_path in large_filename_dict:
 
-                    for word in cursor.execute('SELECT unique_consolidated_list FROM consolidated_list'):
-                    
-                        count = self.progressBar.value() + 1
-                        self.progressBar.setValue(count)
-                        self.textBrowser_status_msgs_brief.setText("Now processing word " + str(count) + " of " + str(total_word_count) + " : " + str(word[0]))
-                        #HAVE A STOP BUTTTON
-                    
-                        positions_ds = get_positions(word[0], subsitution_dictionary)
-                        iterative_function(0, positions_ds, word[0], "", output_file)
+                with open(full_path, 'r') as f:
+                    for i, l in enumerate(f):
+                        pass
+                total_word_count = i + 1
 
+                filename = os.path.basename(full_path)
+                self.textBrowser_status_msgs.append("Now processing large file: " + str(filename) + " with a word count of: " + str(total_word_count))
 
-                    cursor.close()
-                    connection.close()
+                self.progressBar.setMinimum(0)
+                self.progressBar.setMaximum(int(total_word_count))
+                self.progressBar.setValue(0)
+                count = 0
+            
+                f = open(full_path,'r')
     
-                    del cursor
-                    del connection
+                for line in f:
+                    count = self.progressBar.value() + 1
+                    self.progressBar.setValue(count)
+                    self.textBrowser_status_msgs_brief.setText("Now processing word " + str(count) + " of " + str(total_word_count) + " : " + str(line).strip())
+
+                    if str(line).strip():
+                        if not(str(line).strip() in remove_common_words):
+                            positions_ds = get_positions(str(line).strip(), subsitution_dictionary)
+                            iterative_function(0, positions_ds, str(line).strip(), "", policy_mutate_plugin_names, policy_select_plugin_names, output_file)
+
+
+
+                f.close()
+                f = None
+
+
+            # total word count for output file...
+            with open(output_file, 'r') as f:
+                for i, l in enumerate(f):
+                    pass
+            total_word_count = i + 1
+
+                    
 
             self.textBrowser_status_msgs_brief.clear()
             self.textBrowser_status_msgs.append("Finished Mutating temp word dictionary")
@@ -309,7 +369,8 @@ class BELVA_AppUI(QtGui.QMainWindow, src.gui.design.Ui_MainWindow):
             belvaRemoveDB(MD5_string)
             
             self.textBrowser_status_msgs.append("Please Find the final custom dictionary here:")
-            self.textBrowser_status_msgs.append(output_file)            
+            self.textBrowser_status_msgs.append(output_file)          
+            self.textBrowser_status_msgs.append("Total number of words in output file: " + str(total_word_count))
             self.textBrowser_status_msgs.append("FINISHED!!!")
 
 
