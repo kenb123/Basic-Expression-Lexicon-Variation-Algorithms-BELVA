@@ -48,7 +48,10 @@ def nonread_sqlite(SQL, MD5_sum):
 #----------------------------------------------
 
 
-    db_path = os.getcwd()
+    db_path = os.path.dirname(os.path.abspath(__file__))
+    db_path = db_path.replace("/src/db", "")
+    db_path = db_path.replace("\src\db", "")
+
     db_path = db_path + "/tmp/" + MD5_sum + ".db"
     
     connection = sqlite3.connect(db_path)
@@ -71,7 +74,10 @@ def nonread_sqlite(SQL, MD5_sum):
 def nonread_sqlite_parameterized(SQL, MD5_sum):
 #----------------------------------------------
 
-    db_path = os.getcwd()
+    db_path = os.path.dirname(os.path.abspath(__file__))
+    db_path = db_path.replace("/src/db", "")
+    db_path = db_path.replace("\src\db", "")
+
     db_path = db_path + "/tmp/" + MD5_sum + ".db"
     
     connection = sqlite3.connect(db_path)
@@ -97,7 +103,10 @@ def read_sqlite(SQL, MD5_sum):
 #----------------------------------------------
 
 
-    db_path = os.getcwd()
+    db_path = os.path.dirname(os.path.abspath(__file__))
+    db_path = db_path.replace("/src/db", "")
+    db_path = db_path.replace("\src\db", "")
+
     db_path = db_path + "/tmp/" + MD5_sum + ".db"
 
     connection = sqlite3.connect(db_path)
@@ -127,7 +136,10 @@ def del_database(MD5_sum):
 #----------------------------------------------
 
 
-    db_path = os.getcwd()
+    db_path = os.path.dirname(os.path.abspath(__file__))
+    db_path = db_path.replace("/src/db", "")
+    db_path = db_path.replace("\src\db", "")
+
     db_path = db_path + "/tmp/" + MD5_sum + ".db"
     
     os.remove(db_path)

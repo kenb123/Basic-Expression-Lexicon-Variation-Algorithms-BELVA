@@ -63,7 +63,11 @@ def get_class_name(mod_name):
 def dynamic_load_return_mods():
 #---------------------------------------
 
-    path = os.path.join(os.getcwd(), "plugins/substitutions")
+#    path = os.path.join(os.getcwd(), "plugins/substitutions")
+    path = os.path.join(os.path.dirname(__file__), "plugins/substitutions")
+    path = path.replace("src/pluginSystem/", "")
+    path = path.replace("src\pluginSystem\\", "")
+
     modules = pkgutil.iter_modules(path=[path])
     
     mode_names = []        

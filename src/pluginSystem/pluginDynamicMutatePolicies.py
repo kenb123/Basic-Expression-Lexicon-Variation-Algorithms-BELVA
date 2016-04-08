@@ -66,8 +66,10 @@ def dynamic_load_return_mods():
     #---- we want to return mod names so we can control output
     
 #    path = os.path.join(os.path.dirname(__file__), "applicationSignatures")
-    path = os.path.join(os.getcwd(), "plugins/policies/mutate")
-
+#    path = os.path.join(os.getcwd(), "plugins/policies/mutate")
+    path = os.path.join(os.path.dirname(__file__), "plugins/policies/mutate")
+    path = path.replace("src/pluginSystem/", "")
+    path = path.replace("src\pluginSystem\\", "")
 
     modules = pkgutil.iter_modules(path=[path])
             
