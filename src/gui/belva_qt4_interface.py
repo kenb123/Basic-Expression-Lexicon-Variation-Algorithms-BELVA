@@ -60,6 +60,8 @@ from src.pluginSystem.pluginControlSystem import get_policy_select_names
 from src.pluginSystem.pluginControlSystem import get_substitution_names
 from src.pluginSystem.pluginControlSystem import return_substitution_dict
 
+from src.threadQueue.aptQueueControlSystem import send_words_to_queue
+
 from src.belvaCommonRoutines import iterative_function
 from src.belvaCommonRoutines import get_positions
 
@@ -91,7 +93,10 @@ class BELVA_AppUI(QtGui.QMainWindow, src.gui.design.Ui_MainWindow):
         self.progressBar.setValue(0)
 
         #set the default directory to the localized importExternalSources Folder
-        current_directory = os.getcwd()
+#        current_directory = os.getcwd()
+        current_directory = os.path.dirname(os.path.abspath(__file__))
+        current_directory = current_directory.replace("/src/gui", "")
+        current_directory = current_directory.replace("\src\gui", "")
         self.lineEdit_input_src_dir.setText(current_directory + "/importExternalSources/")
 
         #set the default directory to the localized outputFile Folder
@@ -233,8 +238,11 @@ class BELVA_AppUI(QtGui.QMainWindow, src.gui.design.Ui_MainWindow):
             # Get words to filter
             #------------------------------------
             remove_common_words = []
-            common_words_dir = os.getcwd() + "/filterDictionaries/"
-
+#            common_words_dir = os.getcwd() + "/filterDictionaries/"
+            common_words_dir = os.path.dirname(os.path.abspath(__file__))
+            common_words_dir = common_words_dir.replace("/src/gui", "")
+            common_words_dir = common_words_dir.replace("\src\gui", "")
+            common_words_dir = common_words_dir + "/filterDictionaries/" 
     
             for root, directories, filenames in os.walk(common_words_dir):
                 for filename in filenames:
@@ -263,13 +271,13 @@ class BELVA_AppUI(QtGui.QMainWindow, src.gui.design.Ui_MainWindow):
 
             belvaDataImport(global_gui_status_msgs, global_gui_status_msgs_brief, global_gui_progressBar, small_filename_dict, MD5_string, remove_common_words)
 
+            self.textBrowser_status_msgs_brief.clear()
             total_word_count = count_consolidated_list(MD5_string)
             self.textBrowser_status_msgs.append("Total Number of Unique Consolidated Words for small files: " + str(total_word_count))
+
+
             
             # no words found!
-            if total_word_count == 0:
-                print()
-
 #            gui.belva_qt4_global_gui_vars.global_gui_window = self.textBrowser_results_window
 #            gui.belva_qt4_routines_delete.run_app(nmap_text, masscan_network_text, masscan_ports_text)
 
@@ -301,16 +309,21 @@ class BELVA_AppUI(QtGui.QMainWindow, src.gui.design.Ui_MainWindow):
                 #------------------------------------
                 # cycle through finalized list of words
                 #------------------------------------
-                
+                break_up_queue = int(total_word_count) / 20
+
+                words_array = []
                 for word in all_consolidated_words:
-                    
+
                     count = self.progressBar.value() + 1
                     self.progressBar.setValue(count)
-                    self.textBrowser_status_msgs_brief.setText("Now processing word " + str(count) + " of " + str(total_word_count) + " : " + str(word[0]))
-                        #HAVE A STOP BUTTTON
-                    
-                    positions_ds = get_positions(word[0], subsitution_dictionary)
-                    iterative_function(0, positions_ds, word[0], "", policy_mutate_plugin_names, policy_select_plugin_names, output_file)
+                    self.textBrowser_status_msgs_brief.setText("Now processing word " + str(count) + " of " + str(total_word_count) + " : " + str(word[0]).strip())
+
+                    if len(words_array) <= break_up_queue:
+                        words_array.append(str(word[0]).strip())
+                    else:
+                        words_array.append(str(word[0]).strip())
+                        send_words_to_queue(words_array, subsitution_dictionary, policy_mutate_plugin_names, policy_select_plugin_names, output_file)
+                        words_array = []
 
 
             #------------------------------------
@@ -320,11 +333,13 @@ class BELVA_AppUI(QtGui.QMainWindow, src.gui.design.Ui_MainWindow):
             self.textBrowser_status_msgs.append("Now processing large files...")
             for full_path in large_filename_dict:
 
-                with open(full_path, 'r') as f:
+                with open(full_path, 'r',  errors='replace') as f:
                     for i, l in enumerate(f):
                         pass
                 total_word_count = i + 1
 
+                break_up_queue = total_word_count / 20
+                
                 filename = os.path.basename(full_path)
                 self.textBrowser_status_msgs.append("Now processing large file: " + str(filename) + " with a word count of: " + str(total_word_count))
 
@@ -333,18 +348,28 @@ class BELVA_AppUI(QtGui.QMainWindow, src.gui.design.Ui_MainWindow):
                 self.progressBar.setValue(0)
                 count = 0
             
-                f = open(full_path,'r')
+                f = open(full_path,'r',  errors='replace')
     
+                words_array = []
                 for line in f:
+
                     count = self.progressBar.value() + 1
                     self.progressBar.setValue(count)
-                    self.textBrowser_status_msgs_brief.setText("Now processing word " + str(count) + " of " + str(total_word_count) + " : " + str(line).strip())
+                    self.textBrowser_status_msgs_brief.setText("Now processing up to word " + str(count) + " of " + str(total_word_count) + " : " + str(line).strip())
 
                     if str(line).strip():
                         if not(str(line).strip() in remove_common_words):
-                            positions_ds = get_positions(str(line).strip(), subsitution_dictionary)
-                            iterative_function(0, positions_ds, str(line).strip(), "", policy_mutate_plugin_names, policy_select_plugin_names, output_file)
 
+                            if len(words_array) <= break_up_queue:
+                                words_array.append(str(line).strip())
+                            else:
+                                words_array.append(str(line).strip())
+                                for substitution_plugin_name in substitution_plugin_names:
+
+                                    subsitution_dictionary = return_substitution_dict(substitution_plugin_name)
+
+                                    send_words_to_queue(words_array, subsitution_dictionary, policy_mutate_plugin_names, policy_select_plugin_names, output_file)
+                                words_array = []
 
 
                 f.close()
@@ -352,7 +377,7 @@ class BELVA_AppUI(QtGui.QMainWindow, src.gui.design.Ui_MainWindow):
 
 
             # total word count for output file...
-            with open(output_file, 'r') as f:
+            with open(output_file, 'r',  errors='replace') as f:
                 for i, l in enumerate(f):
                     pass
             total_word_count = i + 1
