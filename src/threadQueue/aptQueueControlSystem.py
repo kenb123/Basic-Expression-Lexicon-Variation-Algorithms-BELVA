@@ -62,7 +62,7 @@ def send_words_to_queue(words_array, subsitution_dictionary, policy_mutate_plugi
         queue_ds_array.append(queue_word_ds)
 
     if queue_ds_array:
-        queue_cmd(process_word, queue_ds_array, 500)
+        queue_cmd(process_word, queue_ds_array, 100)
 
 
 
