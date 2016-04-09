@@ -358,7 +358,7 @@ class BELVA_AppUI(QtGui.QMainWindow, src.gui.design.Ui_MainWindow):
 
                     count = self.progressBar.value() + 1
                     self.progressBar.setValue(count)
-                    self.textBrowser_status_msgs_brief.setText("Now processing up to word " + str(count) + " of " + str(total_word_count) + " : " + str(line).strip())
+                    self.textBrowser_status_msgs_brief.setText("Processing through word " + str(count) + " of " + str(total_word_count) + " : " + str(line).strip())
 
                     if str(line).strip():
                         if not(str(line).strip() in remove_common_words):
