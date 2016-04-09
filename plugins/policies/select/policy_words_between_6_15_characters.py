@@ -69,7 +69,7 @@ class CheckWord():
         #always return true if passed the checks
         #always return false if didn't pass checks
         
-        if (6 < int(len(word)) or 15 > int(len(word))):
+        if ((5 < int(len(word))) and (16 > int(len(word)))):
             return True
 
         # no checks
