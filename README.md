@@ -68,14 +68,13 @@ You will see new dictionary words being generated if past the import stage.
 --
 
 1. Word selection / automated weighing of which words to use
-2. Interface improvements: better responsiveness 
-3. Multi-Threading word permutations from interface
-4. Non-GUI version that directs output to stdout
-5. Expand functionality and add more plug-ins
+2. Interface improvements: better responsiveness
+3. Non-GUI version that directs output to stdout
+4. Expand functionality and add more plug-ins
 	- Additional permutation dictionaries
 	- Additional applied and removal policies
 	- Additional username creation policies
-6. Other types of permutations in addition to just usernames and passwords (i.e., email addresses, sub-domain names)
+5. Other types of permutations in addition to just usernames and passwords (i.e., email addresses, sub-domain names)
 
 
 Developed on Linux and not tested on other platforms so Windows/OSX mileage may vary (as of 2016 March 29)
