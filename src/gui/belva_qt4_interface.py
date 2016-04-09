@@ -333,9 +333,12 @@ class BELVA_AppUI(QtGui.QMainWindow, src.gui.design.Ui_MainWindow):
             #    process large files
             #------------------------------------
             self.textBrowser_status_msgs_brief.clear()
-            self.textBrowser_status_msgs.append("Now processing large files...")
-            for full_path in large_filename_dict:
 
+            if large_filename_dict:
+                self.textBrowser_status_msgs.append("Now processing large files...")
+
+            for full_path in large_filename_dict:
+                
                 with open(full_path, 'r',  errors='replace') as f:
                     for i, l in enumerate(f):
                         pass
@@ -380,10 +383,13 @@ class BELVA_AppUI(QtGui.QMainWindow, src.gui.design.Ui_MainWindow):
 
 
             # total word count for output file...
+            total_word_count = -1
             with open(output_file, 'r',  errors='replace') as f:
-                for i, l in enumerate(f):
+                for total_word_count, l in enumerate(f):
                     pass
-            total_word_count = i + 1
+
+            if total_word_count == -1:
+                total_word_count = 0
 
             elapsed_time = time.time() - start_time
                     
