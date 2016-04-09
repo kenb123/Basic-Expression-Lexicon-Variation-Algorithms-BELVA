@@ -38,7 +38,7 @@
    <widget class="QPushButton" name="pushButton_run_belva">
     <property name="geometry">
      <rect>
-      <x>530</x>
+      <x>590</x>
       <y>30</y>
       <width>101</width>
       <height>31</height>
@@ -236,10 +236,10 @@
    <widget class="QFrame" name="frame_4">
     <property name="geometry">
      <rect>
-      <x>60</x>
-      <y>400</y>
-      <width>761</width>
-      <height>151</height>
+      <x>10</x>
+      <y>420</y>
+      <width>411</width>
+      <height>131</height>
      </rect>
     </property>
     <property name="frameShape">
@@ -253,8 +253,8 @@
       <rect>
        <x>10</x>
        <y>10</y>
-       <width>741</width>
-       <height>131</height>
+       <width>391</width>
+       <height>111</height>
       </rect>
      </property>
     </widget>
@@ -262,9 +262,9 @@
    <widget class="QLabel" name="label_5">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>400</y>
-      <width>41</width>
+      <x>10</x>
+      <y>390</y>
+      <width>31</width>
       <height>21</height>
      </rect>
     </property>
@@ -277,8 +277,8 @@
      <rect>
       <x>430</x>
       <y>70</y>
-      <width>201</width>
-      <height>321</height>
+      <width>381</width>
+      <height>101</height>
      </rect>
     </property>
     <property name="frameShape">
@@ -292,8 +292,8 @@
       <rect>
        <x>10</x>
        <y>10</y>
-       <width>181</width>
-       <height>301</height>
+       <width>361</width>
+       <height>81</height>
       </rect>
      </property>
      <property name="selectionMode">
@@ -308,7 +308,7 @@
     <property name="geometry">
      <rect>
       <x>430</x>
-      <y>40</y>
+      <y>50</y>
       <width>91</width>
       <height>21</height>
      </rect>
@@ -320,8 +320,8 @@
    <widget class="QLabel" name="label_7">
     <property name="geometry">
      <rect>
-      <x>640</x>
-      <y>10</y>
+      <x>430</x>
+      <y>180</y>
       <width>171</width>
       <height>21</height>
      </rect>
@@ -333,9 +333,9 @@
    <widget class="QFrame" name="frame_7">
     <property name="geometry">
      <rect>
-      <x>640</x>
-      <y>30</y>
-      <width>181</width>
+      <x>430</x>
+      <y>200</y>
+      <width>381</width>
       <height>361</height>
      </rect>
     </property>
@@ -353,7 +353,7 @@
       <rect>
        <x>10</x>
        <y>10</y>
-       <width>161</width>
+       <width>361</width>
        <height>161</height>
       </rect>
      </property>
@@ -372,7 +372,7 @@
       <rect>
        <x>10</x>
        <y>180</y>
-       <width>161</width>
+       <width>361</width>
        <height>171</height>
       </rect>
      </property>
