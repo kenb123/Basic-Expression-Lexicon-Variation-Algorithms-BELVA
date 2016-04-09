@@ -57,7 +57,7 @@ class Description():
 
 
         DescriptionDetails = {}
-        DescriptionDetails['name'] = "Select Words Between 6 & 15 in Length"
+        DescriptionDetails['name'] = "Select Words >= 6 & <= 15 in Length"
         
         return DescriptionDetails
 
@@ -69,7 +69,7 @@ class CheckWord():
         #always return true if passed the checks
         #always return false if didn't pass checks
         
-        if ((5 < int(len(word))) and (16 > int(len(word)))):
+        if ((int(len(word)) >= 6) and (int(len(word))) <= 15):
             return True
 
         # no checks
