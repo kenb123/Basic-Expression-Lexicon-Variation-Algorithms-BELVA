@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'design.ui'
 #
-# Created: Fri Apr  8 22:40:51 2016
+# Created: Fri Apr  8 22:47:20 2016
 #      by: PyQt4 UI code generator 4.11.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -65,7 +65,7 @@ class Ui_MainWindow(object):
         self.frame_2.setFrameShadow(QtGui.QFrame.Raised)
         self.frame_2.setObjectName(_fromUtf8("frame_2"))
         self.textBrowser_status_msgs = QtGui.QTextBrowser(self.frame_2)
-        self.textBrowser_status_msgs.setGeometry(QtCore.QRect(10, 10, 391, 101))
+        self.textBrowser_status_msgs.setGeometry(QtCore.QRect(10, 10, 391, 111))
         self.textBrowser_status_msgs.setObjectName(_fromUtf8("textBrowser_status_msgs"))
         self.textBrowser_status_msgs_brief = QtGui.QTextBrowser(self.frame_2)
         self.textBrowser_status_msgs_brief.setGeometry(QtCore.QRect(10, 130, 391, 51))
