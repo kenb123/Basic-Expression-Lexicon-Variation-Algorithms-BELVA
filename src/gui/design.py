@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'design.ui'
 #
-# Created: Fri Apr  8 22:10:10 2016
+# Created: Fri Apr  8 22:16:15 2016
 #      by: PyQt4 UI code generator 4.11.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -103,12 +103,12 @@ class Ui_MainWindow(object):
         self.label_5.setGeometry(QtCore.QRect(10, 390, 31, 21))
         self.label_5.setObjectName(_fromUtf8("label_5"))
         self.frame_5 = QtGui.QFrame(self.centralwidget)
-        self.frame_5.setGeometry(QtCore.QRect(430, 70, 381, 101))
+        self.frame_5.setGeometry(QtCore.QRect(430, 70, 391, 101))
         self.frame_5.setFrameShape(QtGui.QFrame.StyledPanel)
         self.frame_5.setFrameShadow(QtGui.QFrame.Raised)
         self.frame_5.setObjectName(_fromUtf8("frame_5"))
         self.listWidget_substitutions = QtGui.QListWidget(self.frame_5)
-        self.listWidget_substitutions.setGeometry(QtCore.QRect(10, 10, 361, 81))
+        self.listWidget_substitutions.setGeometry(QtCore.QRect(10, 10, 371, 81))
         self.listWidget_substitutions.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
         self.listWidget_substitutions.setObjectName(_fromUtf8("listWidget_substitutions"))
         self.label_6 = QtGui.QLabel(self.centralwidget)
@@ -118,18 +118,18 @@ class Ui_MainWindow(object):
         self.label_7.setGeometry(QtCore.QRect(430, 180, 171, 21))
         self.label_7.setObjectName(_fromUtf8("label_7"))
         self.frame_7 = QtGui.QFrame(self.centralwidget)
-        self.frame_7.setGeometry(QtCore.QRect(430, 200, 381, 361))
+        self.frame_7.setGeometry(QtCore.QRect(430, 200, 391, 361))
         self.frame_7.setFrameShape(QtGui.QFrame.StyledPanel)
         self.frame_7.setFrameShadow(QtGui.QFrame.Raised)
         self.frame_7.setObjectName(_fromUtf8("frame_7"))
         self.listWidget_policies_mutate = QtGui.QListWidget(self.frame_7)
         self.listWidget_policies_mutate.setEnabled(True)
-        self.listWidget_policies_mutate.setGeometry(QtCore.QRect(10, 10, 361, 161))
+        self.listWidget_policies_mutate.setGeometry(QtCore.QRect(10, 10, 371, 161))
         self.listWidget_policies_mutate.setSelectionMode(QtGui.QAbstractItemView.MultiSelection)
         self.listWidget_policies_mutate.setObjectName(_fromUtf8("listWidget_policies_mutate"))
         self.listWidget_policies_select = QtGui.QListWidget(self.frame_7)
         self.listWidget_policies_select.setEnabled(True)
-        self.listWidget_policies_select.setGeometry(QtCore.QRect(10, 180, 361, 171))
+        self.listWidget_policies_select.setGeometry(QtCore.QRect(10, 180, 371, 171))
         self.listWidget_policies_select.setSelectionMode(QtGui.QAbstractItemView.MultiSelection)
         self.listWidget_policies_select.setObjectName(_fromUtf8("listWidget_policies_select"))
         MainWindow.setCentralWidget(self.centralwidget)
