@@ -38,8 +38,8 @@
    <widget class="QPushButton" name="pushButton_run_belva">
     <property name="geometry">
      <rect>
-      <x>590</x>
-      <y>30</y>
+      <x>130</x>
+      <y>170</y>
       <width>101</width>
       <height>31</height>
      </rect>
@@ -52,7 +52,7 @@
     <property name="geometry">
      <rect>
       <x>300</x>
-      <y>200</y>
+      <y>180</y>
       <width>118</width>
       <height>23</height>
      </rect>
@@ -120,9 +120,9 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>230</y>
+      <y>210</y>
       <width>411</width>
-      <height>161</height>
+      <height>191</height>
      </rect>
     </property>
     <property name="frameShape">
@@ -137,7 +137,7 @@
        <x>10</x>
        <y>10</y>
        <width>391</width>
-       <height>91</height>
+       <height>101</height>
       </rect>
      </property>
     </widget>
@@ -145,9 +145,9 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>110</y>
+       <y>130</y>
        <width>391</width>
-       <height>41</height>
+       <height>51</height>
       </rect>
      </property>
     </widget>
@@ -156,8 +156,8 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>200</y>
-      <width>191</width>
+      <y>180</y>
+      <width>121</width>
       <height>21</height>
      </rect>
     </property>
@@ -168,8 +168,8 @@
    <widget class="QLabel" name="label_3">
     <property name="geometry">
      <rect>
-      <x>230</x>
-      <y>200</y>
+      <x>240</x>
+      <y>180</y>
       <width>64</width>
       <height>21</height>
      </rect>
@@ -182,7 +182,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>120</y>
+      <y>110</y>
       <width>411</width>
       <height>51</height>
      </rect>
@@ -224,7 +224,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>100</y>
+      <y>90</y>
       <width>111</width>
       <height>21</height>
      </rect>
@@ -263,7 +263,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>390</y>
+      <y>400</y>
       <width>31</width>
       <height>21</height>
      </rect>
@@ -276,7 +276,7 @@
     <property name="geometry">
      <rect>
       <x>430</x>
-      <y>70</y>
+      <y>40</y>
       <width>391</width>
       <height>101</height>
      </rect>
@@ -308,7 +308,7 @@
     <property name="geometry">
      <rect>
       <x>430</x>
-      <y>50</y>
+      <y>20</y>
       <width>91</width>
       <height>21</height>
      </rect>
@@ -321,7 +321,7 @@
     <property name="geometry">
      <rect>
       <x>430</x>
-      <y>180</y>
+      <y>140</y>
       <width>171</width>
       <height>21</height>
      </rect>
@@ -334,9 +334,9 @@
     <property name="geometry">
      <rect>
       <x>430</x>
-      <y>200</y>
+      <y>160</y>
       <width>391</width>
-      <height>361</height>
+      <height>391</height>
      </rect>
     </property>
     <property name="frameShape">
@@ -354,7 +354,7 @@
        <x>10</x>
        <y>10</y>
        <width>371</width>
-       <height>161</height>
+       <height>181</height>
       </rect>
      </property>
      <property name="selectionMode">
@@ -371,9 +371,9 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>180</y>
+       <y>200</y>
        <width>371</width>
-       <height>171</height>
+       <height>181</height>
       </rect>
      </property>
      <property name="selectionMode">
