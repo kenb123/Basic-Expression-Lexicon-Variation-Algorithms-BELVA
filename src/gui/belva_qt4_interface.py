@@ -287,7 +287,7 @@ class BELVA_AppUI(QtGui.QMainWindow, src.gui.design.Ui_MainWindow):
             #------------------------------------
             # Set progress bar for end user info
             #------------------------------------
-
+ 
             self.progressBar.setMinimum(0)
             self.progressBar.setMaximum(int(total_word_count))
             self.progressBar.setValue(0)
