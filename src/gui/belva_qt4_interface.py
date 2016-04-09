@@ -37,7 +37,7 @@
 #--------------------------------------------------------------------------------------------------
 
 
-import os, time, sys, sqlite3
+import os, time, datetime, sys, sqlite3
 from PyQt4 import QtGui
 
 # converted Qt4 UI from Qt Converter & cmd; pyuic4 design.ui -o design.py
@@ -153,6 +153,9 @@ class BELVA_AppUI(QtGui.QMainWindow, src.gui.design.Ui_MainWindow):
             global_gui_status_msgs = self.textBrowser_status_msgs
             global_gui_status_msgs_brief = self.textBrowser_status_msgs_brief
             global_gui_progressBar = self.progressBar
+
+            start_time = time.time()
+# your code
             
 #            global_gui_status_msgs, global_gui_status_msgs_brief, global_gui_progressBar, 
             #------------------------------------
@@ -382,6 +385,7 @@ class BELVA_AppUI(QtGui.QMainWindow, src.gui.design.Ui_MainWindow):
                     pass
             total_word_count = i + 1
 
+            elapsed_time = time.time() - start_time
                     
 
             self.textBrowser_status_msgs_brief.clear()
@@ -396,6 +400,10 @@ class BELVA_AppUI(QtGui.QMainWindow, src.gui.design.Ui_MainWindow):
             self.textBrowser_status_msgs.append("Please Find the final custom dictionary here:")
             self.textBrowser_status_msgs.append(output_file)          
             self.textBrowser_status_msgs.append("Total number of words in output file: " + str(total_word_count))
+
+            self.textBrowser_status_msgs.append("Elapsed run time: " + str(datetime.timedelta(seconds=int(elapsed_time))))
+
+
             self.textBrowser_status_msgs.append("FINISHED!!!")
 
 
