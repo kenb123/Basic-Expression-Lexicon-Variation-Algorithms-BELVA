@@ -35,37 +35,11 @@
    <string>OWASP - Basic Expression &amp; Lexicon Variation Algorithms (BELVA) - ver 0.1</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="pushButton_run_belva">
-    <property name="geometry">
-     <rect>
-      <x>130</x>
-      <y>170</y>
-      <width>101</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Run BELVA</string>
-    </property>
-   </widget>
-   <widget class="QProgressBar" name="progressBar">
-    <property name="geometry">
-     <rect>
-      <x>300</x>
-      <y>180</y>
-      <width>118</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="value">
-     <number>24</number>
-    </property>
-   </widget>
    <widget class="QFrame" name="frame">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>40</y>
+      <y>30</y>
       <width>411</width>
       <height>51</height>
      </rect>
@@ -107,7 +81,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>20</y>
+      <y>10</y>
       <width>201</width>
       <height>21</height>
      </rect>
@@ -120,9 +94,9 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>210</y>
+      <y>220</y>
       <width>411</width>
-      <height>191</height>
+      <height>181</height>
      </rect>
     </property>
     <property name="frameShape">
@@ -137,7 +111,7 @@
        <x>10</x>
        <y>10</y>
        <width>391</width>
-       <height>111</height>
+       <height>101</height>
       </rect>
      </property>
     </widget>
@@ -145,7 +119,7 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>130</y>
+       <y>120</y>
        <width>391</width>
        <height>51</height>
       </rect>
@@ -156,7 +130,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>180</y>
+      <y>190</y>
       <width>121</width>
       <height>21</height>
      </rect>
@@ -165,24 +139,11 @@
      <string>Status Messages</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_3">
-    <property name="geometry">
-     <rect>
-      <x>240</x>
-      <y>180</y>
-      <width>64</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Progress:</string>
-    </property>
-   </widget>
    <widget class="QFrame" name="frame_3">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>110</y>
+      <y>100</y>
       <width>411</width>
       <height>51</height>
      </rect>
@@ -224,7 +185,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>90</y>
+      <y>80</y>
       <width>111</width>
       <height>21</height>
      </rect>
@@ -308,7 +269,7 @@
     <property name="geometry">
      <rect>
       <x>430</x>
-      <y>20</y>
+      <y>10</y>
       <width>91</width>
       <height>21</height>
      </rect>
@@ -381,6 +342,48 @@
      </property>
      <property name="sortingEnabled">
       <bool>true</bool>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QFrame" name="frame_6">
+    <property name="geometry">
+     <rect>
+      <x>130</x>
+      <y>160</y>
+      <width>291</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QProgressBar" name="progressBar">
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>10</y>
+       <width>161</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="value">
+      <number>24</number>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_run_belva">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>101</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Run BELVA</string>
      </property>
     </widget>
    </widget>
