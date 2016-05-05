@@ -298,7 +298,6 @@ class BELVA_AppUI(QtGui.QMainWindow, src.gui.design.Ui_MainWindow):
 
             all_consolidated_words = get_all_consolidated_words(MD5_string)
 
-
             self.textBrowser_status_msgs.append("Mutating finalized temp word dictionary for small files...")
             for substitution_plugin_name in substitution_plugin_names:
 
@@ -321,12 +320,9 @@ class BELVA_AppUI(QtGui.QMainWindow, src.gui.design.Ui_MainWindow):
                     self.progressBar.setValue(count)
                     self.textBrowser_status_msgs_brief.setText("Now processing word " + str(count) + " of " + str(total_word_count) + " : " + str(word[0]).strip())
 
-                    if len(words_array) <= break_up_queue:
-                        words_array.append(str(word[0]).strip())
-                    else:
-                        words_array.append(str(word[0]).strip())
-                        send_words_to_queue(words_array, subsitution_dictionary, policy_mutate_plugin_names, policy_select_plugin_names, output_file)
-                        words_array = []
+                    words_array.append(str(word[0]).strip())
+                    send_words_to_queue(words_array, subsitution_dictionary, policy_mutate_plugin_names, policy_select_plugin_names, output_file)
+                    words_array = []
 
 
             #------------------------------------
@@ -390,6 +386,10 @@ class BELVA_AppUI(QtGui.QMainWindow, src.gui.design.Ui_MainWindow):
 
             if total_word_count == -1:
                 total_word_count = 0
+
+            if total_word_count == 0:
+                total_word_count = 1
+
 
             elapsed_time = time.time() - start_time
                     

@@ -47,7 +47,7 @@ def send_words_to_queue(words_array, subsitution_dictionary, policy_mutate_plugi
 #---------------------------------------------------------------------------------
 
     queue_ds_array = []
-    
+
     for word in words_array:
         
         queue_word_ds = {}
