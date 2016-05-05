@@ -387,7 +387,7 @@ class BELVA_AppUI(QtGui.QMainWindow, src.gui.design.Ui_MainWindow):
             if total_word_count == -1:
                 total_word_count = 0
 
-            if total_word_count >= 0:
+            elif total_word_count >= 0:
                 total_word_count += 1
 
 
