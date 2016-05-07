@@ -311,18 +311,22 @@ class BELVA_AppUI(QtGui.QMainWindow, src.gui.design.Ui_MainWindow):
                 #------------------------------------
                 # cycle through finalized list of words
                 #------------------------------------
-                break_up_queue = int(total_word_count) / 20
+                if int(total_word_count) > 20:
+                    break_up_queue = round(int(total_word_count) / 20)
+                else:
+                    break_up_queue = int(total_word_count)
 
                 words_array = []
-                for word in all_consolidated_words:
+                if all_consolidated_words:
+                    for word in all_consolidated_words:
 
-                    count = self.progressBar.value() + 1
-                    self.progressBar.setValue(count)
-                    self.textBrowser_status_msgs_brief.setText("Now processing word " + str(count) + " of " + str(total_word_count) + " : " + str(word[0]).strip())
+                        count = self.progressBar.value() + 1
+                        self.progressBar.setValue(count)
+                        self.textBrowser_status_msgs_brief.setText("Now processing word " + str(count) + " of " + str(total_word_count) + " : " + str(word[0]).strip())
 
-                    words_array.append(str(word[0]).strip())
+                        words_array.append(str(word[0]).strip())
+
                     send_words_to_queue(words_array, subsitution_dictionary, policy_mutate_plugin_names, policy_select_plugin_names, output_file)
-                    words_array = []
 
 
             #------------------------------------
@@ -334,13 +338,19 @@ class BELVA_AppUI(QtGui.QMainWindow, src.gui.design.Ui_MainWindow):
                 self.textBrowser_status_msgs.append("Now processing large files...")
 
             for full_path in large_filename_dict:
-                
-                with open(full_path, 'r',  errors='replace') as f:
-                    for i, l in enumerate(f):
-                        pass
-                total_word_count = i + 1
 
-                break_up_queue = total_word_count / 20
+                total_word_count = -1
+                with open(full_path, 'r',  errors='replace') as f:
+                    for total_word_count, l in enumerate(f):
+                        pass
+
+                if total_word_count == -1:
+                    total_word_count = 0
+
+                elif total_word_count >= 0:
+                    total_word_count += 1
+
+                break_up_queue = round(total_word_count / 20)
                 
                 filename = os.path.basename(full_path)
                 self.textBrowser_status_msgs.append("Now processing large file: " + str(filename) + " with a word count of: " + str(total_word_count))
@@ -362,16 +372,35 @@ class BELVA_AppUI(QtGui.QMainWindow, src.gui.design.Ui_MainWindow):
                     if str(line).strip():
                         if not(str(line).strip() in remove_common_words):
 
-                            if len(words_array) <= break_up_queue:
-                                words_array.append(str(line).strip())
-                            else:
-                                words_array.append(str(line).strip())
+                            words_array.append(str(line).strip())
+                            if len(words_array) == break_up_queue:
                                 for substitution_plugin_name in substitution_plugin_names:
 
                                     subsitution_dictionary = return_substitution_dict(substitution_plugin_name)
 
                                     send_words_to_queue(words_array, subsitution_dictionary, policy_mutate_plugin_names, policy_select_plugin_names, output_file)
                                 words_array = []
+
+                if (len(words_array) <= break_up_queue) and (len(words_array) > 0) :
+                    for substitution_plugin_name in substitution_plugin_names:
+
+                        subsitution_dictionary = return_substitution_dict(substitution_plugin_name)
+
+                        send_words_to_queue(words_array, subsitution_dictionary, policy_mutate_plugin_names, policy_select_plugin_names, output_file)
+
+
+                            
+                            
+#                            if len(words_array) <= break_up_queue:
+#                                words_array.append(str(line).strip())
+#                            else:
+#                                words_array.append(str(line).strip())
+#                                for substitution_plugin_name in substitution_plugin_names:
+#
+#                                    subsitution_dictionary = return_substitution_dict(substitution_plugin_name)
+#
+#                                    send_words_to_queue(words_array, subsitution_dictionary, policy_mutate_plugin_names, policy_select_plugin_names, output_file)
+#                                words_array = []
 
 
                 f.close()
