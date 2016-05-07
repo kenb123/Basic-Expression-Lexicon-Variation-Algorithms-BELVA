@@ -389,19 +389,6 @@ class BELVA_AppUI(QtGui.QMainWindow, src.gui.design.Ui_MainWindow):
                         send_words_to_queue(words_array, subsitution_dictionary, policy_mutate_plugin_names, policy_select_plugin_names, output_file)
 
 
-                            
-                            
-#                            if len(words_array) <= break_up_queue:
-#                                words_array.append(str(line).strip())
-#                            else:
-#                                words_array.append(str(line).strip())
-#                                for substitution_plugin_name in substitution_plugin_names:
-#
-#                                    subsitution_dictionary = return_substitution_dict(substitution_plugin_name)
-#
-#                                    send_words_to_queue(words_array, subsitution_dictionary, policy_mutate_plugin_names, policy_select_plugin_names, output_file)
-#                                words_array = []
-
 
                 f.close()
                 f = None
