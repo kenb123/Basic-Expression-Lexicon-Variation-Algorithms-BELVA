@@ -57,6 +57,7 @@ def parseXMLxpathSearch(xml_source, xpathString):
     
         for data in data_points:
             return_values.append(etree.tostring(data))
+            data.clear()
 
     except:
         pass
@@ -77,6 +78,7 @@ def parseXMLxpathSearchSingle(xml_source, xpathString):
     
         for data in data_points:
             return_values.append(data)
+            data.clear()
 
     except:
         pass
@@ -100,6 +102,7 @@ def parseXMLxpathSearchAttribute(xml_source, xpathString):
     
         for data in data_points:
             return_values.append(data)
+            data.clear()
     except:
         pass
 
@@ -122,6 +125,7 @@ def parseHTMLxpathSearch(http_source, xpathString):
 
         for data in html.xpath(xpathString):
             return_values.append(etree.tostring(data.content))
+            data.clear()
 
     except:
         pass
@@ -164,6 +168,8 @@ def parseHTMLallText(http_source):
 
             for data in html.xpath("//meta[@name='description']/@content"):
                 meta_description_array = data.split(" ")
+                data.clear()
+
         except:
             pass
 
@@ -174,6 +180,8 @@ def parseHTMLallText(http_source):
 
             for data in html.xpath("//meta[@name='keywords']/@content"):
                 meta_keywords_array = data.split(",")
+                data.clear()
+
         except:
             pass
 

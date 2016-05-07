@@ -80,5 +80,6 @@ def worker(q, function_name):
             q.task_done()
 
         except:
+            q.task_done()
             pass
 
