@@ -39,7 +39,7 @@
 
 import os, base64
 
-from src.db.belvaSqlDBroutines import write_consolidated_list
+#from src.db.belvaSqlDBroutines import write_consolidated_list
 
 from src.parsers.belvaParseXML import parseXMLxpathSearch as parseXML
 from src.parsers.belvaParseXML import parseXMLxpathSearchSingle as parseXMLsingle
@@ -99,7 +99,7 @@ def belvaDataImport(global_gui_status_msgs, global_gui_status_msgs_brief, global
     global_gui_progressBar.setValue(0)
 
 
-
+    all_words = []
     
     # burp
     i = 0
@@ -112,7 +112,8 @@ def belvaDataImport(global_gui_status_msgs, global_gui_status_msgs_brief, global
             global_gui_progressBar.setValue(count)
 
             global_gui_status_msgs.append("Processing burp file " + str(i) + " of " + str(number_xml))
-            xmlDataImport(global_gui_status_msgs, global_gui_status_msgs_brief, full_path, MD5_string, remove_common_words)
+            returned_words = xmlDataImport(global_gui_status_msgs, global_gui_status_msgs_brief, full_path, MD5_string, remove_common_words)
+            all_words += returned_words
 
 
     # text dictionaries
@@ -125,8 +126,8 @@ def belvaDataImport(global_gui_status_msgs, global_gui_status_msgs_brief, global
             global_gui_progressBar.setValue(count)
 
             global_gui_status_msgs.append("Processing text file " + str(i) + " of " + str(number_txt))
-            txtDataImport(global_gui_status_msgs, global_gui_status_msgs_brief, full_path, MD5_string, remove_common_words)
-
+            returned_words = txtDataImport(global_gui_status_msgs, global_gui_status_msgs_brief, full_path, MD5_string, remove_common_words)
+            all_words += returned_words
 
     # ZAP
     i = 0
@@ -138,8 +139,8 @@ def belvaDataImport(global_gui_status_msgs, global_gui_status_msgs_brief, global
             global_gui_progressBar.setValue(count)
 
             global_gui_status_msgs.append("Processing zap file " + str(i) + " of " + str(number_raw))
-            zapDataImport(global_gui_status_msgs, global_gui_status_msgs_brief, full_path, MD5_string, remove_common_words)            
-            
+            returned_words = zapDataImport(global_gui_status_msgs, global_gui_status_msgs_brief, full_path, MD5_string, remove_common_words)            
+            all_words += returned_words            
 
     # html
     i = 0
@@ -151,10 +152,11 @@ def belvaDataImport(global_gui_status_msgs, global_gui_status_msgs_brief, global
             global_gui_progressBar.setValue(count)
 
             global_gui_status_msgs.append("Processing HTML file " + str(i) + " of " + str(number_html))
-            htmlDataImport(global_gui_status_msgs, global_gui_status_msgs_brief, full_path, MD5_string, remove_common_words)            
-            
-            
-            
+            returned_words = htmlDataImport(global_gui_status_msgs, global_gui_status_msgs_brief, full_path, MD5_string, remove_common_words)            
+            all_words += returned_words            
+
+    #unique words            
+    return list(set(all_words))
                 
 #--------------------------------------------------------------------------
 def txtDataImport(global_gui_status_msgs, global_gui_status_msgs_brief, full_path_w_file, MD5_string, remove_common_words):
@@ -162,13 +164,15 @@ def txtDataImport(global_gui_status_msgs, global_gui_status_msgs_brief, full_pat
 
     f = open(full_path_w_file,'r')
     
+    all_words = []
     i = 0
-    for line in f:
-        if str(line).strip():
+    for word in f:
+        if str(word).strip():
             i += 1
 
-            if not(str(line).strip() in remove_common_words):
-                write_consolidated_list(str(line).strip(), MD5_string)
+            if not(str(word).strip() in remove_common_words):
+                all_words.append(str(word).strip())
+#                write_consolidated_list(str(line).strip(), MD5_string)
                 global_gui_status_msgs_brief.setText("Text File word count: " + str(i))
             
             
@@ -176,20 +180,23 @@ def txtDataImport(global_gui_status_msgs, global_gui_status_msgs_brief, full_pat
     f = None
 
     global_gui_status_msgs.append("Total number of text file words for batch: " + str(i))
-    
+
+    return list(set(all_words))
 
     
 #--------------------------------------------------------------------------
 def xmlDataImport(global_gui_status_msgs, global_gui_status_msgs_brief, full_path_w_file, MD5_string, remove_common_words):
 #--------------------------------------------------------------------------
     
+    return_words = []
 
     with open(full_path_w_file) as myfile:
         data="".join(line.rstrip() for line in myfile)
 
     if "burpVersion=" in data:
-        belvaImportBurpXML(global_gui_status_msgs, global_gui_status_msgs_brief, data, MD5_string, remove_common_words)
+        return_words = belvaImportBurpXML(global_gui_status_msgs, global_gui_status_msgs_brief, data, MD5_string, remove_common_words)
 
+    return return_words
 
 #--------------------------------------------------------------------------
 def zapDataImport(global_gui_status_msgs, global_gui_status_msgs_brief, full_path_w_file, MD5_string, remove_common_words):
@@ -200,16 +207,20 @@ def zapDataImport(global_gui_status_msgs, global_gui_status_msgs_brief, full_pat
 
     all_text = parseAllHTMLtext(str(data).encode('utf-8'))
 #    print(all_text)
+    all_words = []
     i = 0
     for word in all_text:
 #        print(word)
         i += 1
 
         if not(str(word).strip() in remove_common_words):
-            write_consolidated_list(word, MD5_string)
+            all_words.append(str(word).strip())
+#            write_consolidated_list(word, MD5_string)
             global_gui_status_msgs_brief.setText("Zap File word count: " + str(i))
 
     global_gui_status_msgs.append("Total number of ZAP file words for batch: " + str(i))
+
+    return list(set(all_words))
 
 
 #--------------------------------------------------------------------------
@@ -221,18 +232,23 @@ def htmlDataImport(global_gui_status_msgs, global_gui_status_msgs_brief, full_pa
 
     all_text = parseAllHTMLtext(str(data).encode('utf-8'))
 #    print(all_text)
+
+    all_words = []
+    
     i = 0
     for word in all_text:
 #        print(word)
         i += 1
 
         if not(str(word).strip() in remove_common_words):
-            write_consolidated_list(word, MD5_string)
+            all_words.append(str(word).strip())
+#            write_consolidated_list(word, MD5_string)
             global_gui_status_msgs_brief.setText("HTML File word count: " + str(i))
 
     global_gui_status_msgs.append("Total number of HTML file words for batch: " + str(i))
 
 
+    return list(set(all_words))
 
 
 #----------------------------------------------------------------
@@ -240,6 +256,9 @@ def belvaImportBurpXML(global_gui_status_msgs, global_gui_status_msgs_brief, dat
 #----------------------------------------------------------------
 
     #we need to build this dynamically based on input parameters
+
+    all_words = []
+    
     i = 0
     xpath = "//item"
     return_requests_items = parseXML(data, xpath)
@@ -266,12 +285,14 @@ def belvaImportBurpXML(global_gui_status_msgs, global_gui_status_msgs_brief, dat
                     i += 1
 
                     if not(str(word).strip() in remove_common_words):
-                        write_consolidated_list(word, MD5_string)
+                        all_words.append(str(word).strip())
+#                        write_consolidated_list(word, MD5_string)
                         global_gui_status_msgs_brief.setText("burp File word count: " + str(i))
 
 
 
     global_gui_status_msgs.append("Total number of burp file words for batch: " + str(i))
 
+    return list(set(all_words))
 
     

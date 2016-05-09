@@ -272,10 +272,10 @@ class BELVA_AppUI(QtGui.QMainWindow, src.gui.design.Ui_MainWindow):
             self.textBrowser_status_msgs.append("Starting: creating temp word dictionary...")
 
 
-            belvaDataImport(global_gui_status_msgs, global_gui_status_msgs_brief, global_gui_progressBar, small_filename_dict, MD5_string, remove_common_words)
+            all_consolidated_words = belvaDataImport(global_gui_status_msgs, global_gui_status_msgs_brief, global_gui_progressBar, small_filename_dict, MD5_string, remove_common_words)
+            total_word_count = len(all_consolidated_words)
 
             self.textBrowser_status_msgs_brief.clear()
-            total_word_count = count_consolidated_list(MD5_string)
             self.textBrowser_status_msgs.append("Total Number of Unique Consolidated Words for small files: " + str(total_word_count))
 
 
@@ -296,7 +296,7 @@ class BELVA_AppUI(QtGui.QMainWindow, src.gui.design.Ui_MainWindow):
             positions_ds = {}
             subsitution_dictionary = {}
 
-            all_consolidated_words = get_all_consolidated_words(MD5_string)
+#            all_consolidated_words = get_all_consolidated_words(MD5_string)
 
             self.textBrowser_status_msgs.append("Mutating finalized temp word dictionary for small files...")
             for substitution_plugin_name in substitution_plugin_names:
@@ -322,9 +322,9 @@ class BELVA_AppUI(QtGui.QMainWindow, src.gui.design.Ui_MainWindow):
 
                         count = self.progressBar.value() + 1
                         self.progressBar.setValue(count)
-                        self.textBrowser_status_msgs_brief.setText("Now processing word " + str(count) + " of " + str(total_word_count) + " : " + str(word[0]).strip())
+                        self.textBrowser_status_msgs_brief.setText("Now processing word " + str(count) + " of " + str(total_word_count) + " : " + str(word).strip())
 
-                        words_array.append(str(word[0]).strip())
+                        words_array.append(str(word).strip())
 
                     send_words_to_queue(words_array, subsitution_dictionary, policy_mutate_plugin_names, policy_select_plugin_names, output_file)
 
