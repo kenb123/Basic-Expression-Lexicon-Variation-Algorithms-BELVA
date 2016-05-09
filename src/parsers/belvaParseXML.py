@@ -186,42 +186,43 @@ def parseHTMLallText(http_source):
             pass
 
 
-
         #----------------
         # Beautiful soup text
         #----------------
         soup = BeautifulSoup(pure_html, "lxml")
 
+
         # kill all script and style elements
         for script in soup(["script", "style"]):
             script.extract()    # rip it out
 
-        text = soup.get_text()
-        lines = (line.strip() for line in text.splitlines())
-        chunks = (phrase.strip() for line in lines for phrase in line.split("  "))
-        text = '\n'.join(chunk for chunk in chunks if chunk)
-        text.encode('utf-8')
-        text_array = text.split("\n")
+        text = soup.findAll(text=True, recursive=True)
 
-        #merge arrays
         temp_return_values = []
-        temp_return_values = meta_description_array + meta_keywords_array + text_array
+        temp_return_values = meta_description_array + meta_keywords_array + text
 
-
-        # now we clean up arrays....
         really_temp_array = []
         final_temp_array = []
-        for temp_return in temp_return_values:
-            #first we want to get any words with spaces (key words)
-            really_temp_array = temp_return.split(" ")
-            for really_temp in really_temp_array:
-                #select only alpha characters so remove things like - or " or copyright
-                temp_string = ''.join([i for i in really_temp if i.isalpha()])
-                # non-alpha characters end up as spaces so we remove them....
-                if not (str(temp_string).strip() == ""):
-                # we also case all strings as lower case!!!
-                    final_temp_array.append(temp_string.lower())
 
+        for text_string in temp_return_values:
+            #we actually have a string to deal with
+            if str(text_string.strip()):
+                # this is to prevent a beautiful soup warning: not an http string for a . (which is a file)
+                if not ("http://" in text_string[0:8] or "https://"in text_string[0:8] or "." == str(text_string)):
+                
+                    # check to make sure we don't have HTML / scripts in our text"
+                    if not (bool(BeautifulSoup(text_string, "html.parser").find())):
+
+                        # kind of a repeat of the first one but we don't want URLs or other HTML in our data
+                        if not ("http://" in text_string or "https://"in text_string or "<!["in text_string):
+                            really_temp_array = text_string.split(" ")
+
+                            for really_temp in really_temp_array:
+                                temp_string = ''.join([i for i in really_temp if i.isalpha()])
+                                # non-alpha characters end up as spaces so we remove them....
+                                if not (str(temp_string).strip() == ""):
+                                # we also case all strings as lower case!!!
+                                    final_temp_array.append(temp_string.lower())
 
         # remove duplicates
         return_values = list(set(final_temp_array))
@@ -230,6 +231,7 @@ def parseHTMLallText(http_source):
 
     except:
         return return_values
+
 
 
 #---------------------------------------------------------------------------------
