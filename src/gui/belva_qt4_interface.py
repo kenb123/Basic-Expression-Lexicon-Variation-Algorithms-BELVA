@@ -316,17 +316,15 @@ class BELVA_AppUI(QtGui.QMainWindow, src.gui.design.Ui_MainWindow):
                 else:
                     break_up_queue = int(total_word_count)
 
-                words_array = []
                 if all_consolidated_words:
                     for word in all_consolidated_words:
 
+                        # the illusion of progress
                         count = self.progressBar.value() + 1
                         self.progressBar.setValue(count)
                         self.textBrowser_status_msgs_brief.setText("Now processing word " + str(count) + " of " + str(total_word_count) + " : " + str(word).strip())
 
-                        words_array.append(str(word).strip())
-
-                    send_words_to_queue(words_array, subsitution_dictionary, policy_mutate_plugin_names, policy_select_plugin_names, output_file)
+                    send_words_to_queue(all_consolidated_words, subsitution_dictionary, policy_mutate_plugin_names, policy_select_plugin_names, output_file)
 
 
             #------------------------------------
