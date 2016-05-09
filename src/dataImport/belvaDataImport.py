@@ -78,12 +78,15 @@ def belvaDataImport(global_gui_status_msgs, global_gui_status_msgs_brief, global
     number_xml = sum( ".xml" in x for x in small_filename_dict.values())
     number_txt = sum( ".txt" in x for x in small_filename_dict.values())
     number_raw = sum( ".raw" in x for x in small_filename_dict.values())
+    number_html = sum( ".htm" in x for x in small_filename_dict.values())
+
 
     total_files = len(small_filename_dict)
 
     global_gui_status_msgs.append("Total number of burp files: " + (str(number_xml)))
     global_gui_status_msgs.append("Total number of text files: " + (str(number_txt)))
     global_gui_status_msgs.append("Total number of zap files: " + (str(number_raw)))
+    global_gui_status_msgs.append("Total number of HTML files: " + (str(number_html)))
 
 
     #------------------
@@ -136,6 +139,19 @@ def belvaDataImport(global_gui_status_msgs, global_gui_status_msgs_brief, global
 
             global_gui_status_msgs.append("Processing zap file " + str(i) + " of " + str(number_raw))
             zapDataImport(global_gui_status_msgs, global_gui_status_msgs_brief, full_path, MD5_string, remove_common_words)            
+            
+
+    # html
+    i = 0
+    for full_path in small_filename_dict:
+        if ((small_filename_dict[full_path] == ".html") or (small_filename_dict[full_path] == ".htm")):
+            i += 1
+
+            count = global_gui_progressBar.value() + 1
+            global_gui_progressBar.setValue(count)
+
+            global_gui_status_msgs.append("Processing HTML file " + str(i) + " of " + str(number_html))
+            htmlDataImport(global_gui_status_msgs, global_gui_status_msgs_brief, full_path, MD5_string, remove_common_words)            
             
             
             
@@ -195,6 +211,26 @@ def zapDataImport(global_gui_status_msgs, global_gui_status_msgs_brief, full_pat
 
     global_gui_status_msgs.append("Total number of ZAP file words for batch: " + str(i))
 
+
+#--------------------------------------------------------------------------
+def htmlDataImport(global_gui_status_msgs, global_gui_status_msgs_brief, full_path_w_file, MD5_string, remove_common_words):
+#--------------------------------------------------------------------------
+
+    with open(full_path_w_file) as myfile:
+        data="".join(line.rstrip() for line in myfile)
+
+    all_text = parseAllHTMLtext(str(data).encode('utf-8'))
+#    print(all_text)
+    i = 0
+    for word in all_text:
+#        print(word)
+        i += 1
+
+        if not(str(word).strip() in remove_common_words):
+            write_consolidated_list(word, MD5_string)
+            global_gui_status_msgs_brief.setText("HTML File word count: " + str(i))
+
+    global_gui_status_msgs.append("Total number of HTML file words for batch: " + str(i))
 
 
 
