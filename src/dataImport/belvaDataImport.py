@@ -171,7 +171,9 @@ def txtDataImport(global_gui_status_msgs, global_gui_status_msgs_brief, full_pat
             i += 1
 
             if not(str(word).strip() in remove_common_words):
-                all_words.append(str(word).strip())
+                all_words.append(str(word).strip().lower())
+#                all_words.append(str(word).strip())
+
 #                write_consolidated_list(str(line).strip(), MD5_string)
                 global_gui_status_msgs_brief.setText("Text File word count: " + str(i))
             
@@ -214,7 +216,9 @@ def zapDataImport(global_gui_status_msgs, global_gui_status_msgs_brief, full_pat
         i += 1
 
         if not(str(word).strip() in remove_common_words):
-            all_words.append(str(word).strip())
+            all_words.append(str(word).strip().lower())
+#            all_words.append(str(word).strip())
+
 #            write_consolidated_list(word, MD5_string)
             global_gui_status_msgs_brief.setText("Zap File word count: " + str(i))
 
@@ -241,7 +245,9 @@ def htmlDataImport(global_gui_status_msgs, global_gui_status_msgs_brief, full_pa
         i += 1
 
         if not(str(word).strip() in remove_common_words):
-            all_words.append(str(word).strip())
+            all_words.append(str(word).strip().lower())
+#            all_words.append(str(word).strip())
+
 #            write_consolidated_list(word, MD5_string)
             global_gui_status_msgs_brief.setText("HTML File word count: " + str(i))
 
@@ -285,7 +291,9 @@ def belvaImportBurpXML(global_gui_status_msgs, global_gui_status_msgs_brief, dat
                     i += 1
 
                     if not(str(word).strip() in remove_common_words):
-                        all_words.append(str(word).strip())
+                        all_words.append(str(word).strip().lower())
+#                        all_words.append(str(word).strip())
+
 #                        write_consolidated_list(word, MD5_string)
                         global_gui_status_msgs_brief.setText("burp File word count: " + str(i))
 
